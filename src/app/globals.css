@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .container-auto {
+    @apply container mx-auto lg:max-w-5xl;
+  }
+}
