@@ -1,7 +1,7 @@
 import React from 'react';
 
 async function fetchPosts() {
-  const res = await fetch('http://127.0.0.1:8080/posts');
+  const res = await fetch(`${process.env.API_URL}/posts`);
   const { posts } = await res.json();
 
   return posts;
