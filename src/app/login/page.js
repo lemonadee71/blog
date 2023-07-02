@@ -1,11 +1,53 @@
-import React from 'react';
+'use client';
+import React, { useState, useTransition } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { fetchFromAPI, getFormData } from '../utils';
 
-// https://www.hyperui.dev/components/application-ui/login-forms
 const LoginPage = () => {
+  const [error, setError] = useState('');
+  const [isPending, startTransition] = useTransition();
+  const router = useRouter();
+
+  const login = async (e) => {
+    const data = getFormData(e.currentTarget);
+
+    const res = await fetchFromAPI('/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    const { success, message } = await res.json();
+    if (success) {
+      setError('');
+      // We need this to trigger GET after redirect
+      startTransition(() => router.push('/'));
+      startTransition(() => router.refresh());
+    } else {
+      setError(message);
+    }
+  };
+
   return (
-    <main className="bg-white flex items-center justify-center px-8 py-8 sm:px-12 lg:px-16 lg:py-12">
+    // https://www.hyperui.dev/components/application-ui/login-forms
+    <main className="bg-white flex flex-col items-center justify-center px-8 pt-2 pb-8 sm:px-12 lg:px-16 lg:pt-4 lg:pb-12">
       <div className="max-w-xl lg:max-w-3xl">
-        <a className="block text-blue-600" href="/">
+        <section className="mb-6">
+          {error && (
+            <div className="container-auto rounded-md px-6 py-4 my-6 border border-solid border-[#f5c2c7] bg-[#f8d7da] text-[#842029]">
+              {error instanceof Array ? (
+                error.map((e, i) => <p key={i}>{e}</p>)
+              ) : (
+                <p>{error}</p>
+              )}
+            </div>
+          )}
+        </section>
+
+        <Link className="block text-blue-600" href="/">
           <span className="sr-only">Home</span>
           {/* Replace with logo */}
           <svg
@@ -19,7 +61,7 @@ const LoginPage = () => {
               fill="currentColor"
             />
           </svg>
-        </a>
+        </Link>
 
         <h1 className="mt-6 text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl">
           Welcome to Blog!
@@ -31,13 +73,16 @@ const LoginPage = () => {
         </p>
 
         <form
-          action="#"
           id="login"
           className="mt-8 flex flex-col gap-6 lg:max-w-lg"
+          onSubmit={(e) => {
+            login(e);
+            e.preventDefault();
+          }}
         >
-          <div className="">
+          <div>
             <label
-              for="username"
+              htmlFor="username"
               className="block text-sm font-medium text-gray-700"
             >
               Username
@@ -51,9 +96,9 @@ const LoginPage = () => {
             />
           </div>
 
-          <div className="">
+          <div>
             <label
-              for="password"
+              htmlFor="password"
               className="block text-sm font-medium text-gray-700"
             >
               Password
@@ -78,7 +123,14 @@ const LoginPage = () => {
           </button>
 
           <div>
-            <form action="#" id="login_guest" className="hidden">
+            <form
+              id="login_guest"
+              className="hidden"
+              onSubmit={(e) => {
+                login(e);
+                e.preventDefault();
+              }}
+            >
               <input
                 type="hidden"
                 name="username"
@@ -95,9 +147,9 @@ const LoginPage = () => {
 
             <p className="mt-4 text-sm text-gray-500 sm:mt-0">
               <span>Don&apos;t have an account? </span>
-              <a href="/signup" className="text-gray-700 underline">
+              <Link href="/signup" className="text-gray-700 underline">
                 Sign up
-              </a>
+              </Link>
               <span> or </span>
               <button
                 type="submit"

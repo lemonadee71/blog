@@ -1,4 +1,6 @@
 import './globals.css';
+import Link from 'next/link';
+import ProtectedWrapper from '../components/ProtectedWrapper';
 
 export const metadata = {
   title: 'Create Next App',
@@ -9,11 +11,37 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <header class="h-16 bg-[#1F2937]">
-          <div class="h-full container-auto px-6 flex justify-between items-center">
-            <span class="font-poppins font-semibold text-2xl text-white tracking-wide">
+        <header className="h-16 bg-[#1F2937]">
+          <div className="h-full container-auto px-6 flex justify-between items-center">
+            <Link
+              href={'/'}
+              className="font-poppins font-semibold text-2xl text-white tracking-wide"
+            >
               blog.
-            </span>
+            </Link>
+            <ProtectedWrapper
+              ifHasUser={
+                <form
+                  action={process.env.NEXT_PUBLIC_API_URL + '/logout'}
+                  method="post"
+                >
+                  <button
+                    type="submit"
+                    className="inline-block rounded-md border border-blue-600 px-4 py-2 text-sm text-white font-bold transition hover:text-blue-600 focus:outline-none focus:ring active:text-blue-600"
+                  >
+                    Logout
+                  </button>
+                </form>
+              }
+              ifNoUser={
+                <Link
+                  href={'/login'}
+                  className="inline-block rounded-md border border-blue-600 bg-blue-600 px-4 py-2 text-sm font-bold text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500"
+                >
+                  Login
+                </Link>
+              }
+            />
           </div>
         </header>
         {children}
