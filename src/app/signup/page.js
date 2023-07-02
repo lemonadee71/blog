@@ -33,7 +33,7 @@ const SignupPage = () => {
         <form action="#" className="mt-8 grid grid-cols-6 gap-6">
           <div className="col-span-6 sm:col-span-3">
             <label
-              for="FirstName"
+              htmlFor="FirstName"
               className="block text-sm font-medium text-gray-700"
             >
               First Name
@@ -49,7 +49,7 @@ const SignupPage = () => {
 
           <div className="col-span-6 sm:col-span-3">
             <label
-              for="LastName"
+              htmlFor="LastName"
               className="block text-sm font-medium text-gray-700"
             >
               Last Name
@@ -65,7 +65,7 @@ const SignupPage = () => {
 
           <div className="col-span-6">
             <label
-              for="Email"
+              htmlFor="Email"
               className="block text-sm font-medium text-gray-700"
             >
               Email
@@ -81,7 +81,7 @@ const SignupPage = () => {
 
           <div className="col-span-6 sm:col-span-3">
             <label
-              for="Password"
+              htmlFor="Password"
               className="block text-sm font-medium text-gray-700"
             >
               Password
@@ -97,7 +97,7 @@ const SignupPage = () => {
 
           <div className="col-span-6 sm:col-span-3">
             <label
-              for="PasswordConfirmation"
+              htmlFor="PasswordConfirmation"
               className="block text-sm font-medium text-gray-700"
             >
               Password Confirmation
