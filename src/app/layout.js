@@ -1,6 +1,7 @@
 import './globals.css';
 import Link from 'next/link';
-import ProtectedWrapper from '../components/ProtectedWrapper';
+import ProtectedWrapper from '@/components/ProtectedWrapper';
+import LogoutButton from '@/components/LogoutButton';
 
 export const metadata = {
   title: 'Create Next App',
@@ -20,19 +21,7 @@ export default function RootLayout({ children }) {
               blog.
             </Link>
             <ProtectedWrapper
-              ifHasUser={
-                <form
-                  action={process.env.NEXT_PUBLIC_API_URL + '/logout'}
-                  method="post"
-                >
-                  <button
-                    type="submit"
-                    className="inline-block rounded-md border border-blue-600 px-4 py-2 text-sm text-white font-bold transition hover:text-blue-600 focus:outline-none focus:ring active:text-blue-600"
-                  >
-                    Logout
-                  </button>
-                </form>
-              }
+              ifHasUser={<LogoutButton />}
               ifNoUser={
                 <Link
                   href={'/login'}
