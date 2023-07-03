@@ -7,9 +7,3 @@ export const fetchFromAPI = (path, opts = {}) =>
     // We need this to send and accept cookies
     credentials: 'include',
   });
-
-export const getFormData = (form) => {
-  const o = {};
-  for (const [key, value] of new FormData(form)) o[key] = value;
-  return o;
-};

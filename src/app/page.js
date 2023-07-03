@@ -1,5 +1,5 @@
 import React from 'react';
-import { fetchFromAPI } from './utils';
+import { fetchFromAPI } from '../utils';
 
 async function fetchPosts() {
   const res = await fetchFromAPI('/posts');

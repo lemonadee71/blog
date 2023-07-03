@@ -1,11 +1,10 @@
-'use client';
 import React from 'react';
-import { fetchFromAPI } from '../app/utils';
+import { fetchFromAPIWithCookie } from '../utils/server';
 
-// we need this to be inside a client component to work
-// my guess is we don't have the cookies if it is inside the server
 async function hasAuthenticatedUser() {
-  const res = await fetchFromAPI('/user', { cache: 'no-store' });
+  const res = await fetchFromAPIWithCookie('/user', {
+    cache: process.env.CACHE_MODE,
+  });
   return res.json();
 }
 

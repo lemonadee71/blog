@@ -2,7 +2,8 @@
 import React, { useState, useTransition } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { fetchFromAPI, getFormData } from '../utils';
+import { fetchFromAPI } from '../../utils';
+import { getFormData } from '../../utils/client';
 
 const LoginPage = () => {
   const [error, setError] = useState('');
