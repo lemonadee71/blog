@@ -1,14 +1,12 @@
 'use client';
-import React, { useState, useTransition } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { fetchFromAPI } from '../../utils';
-import { getFormData } from '../../utils/client';
+import { fetchFromAPI } from '@/utils';
+import { getFormData, useRedirect } from '@/utils/client';
 
 const LoginPage = () => {
+  const redirect = useRedirect();
   const [error, setError] = useState('');
-  const [isPending, startTransition] = useTransition();
-  const router = useRouter();
 
   const login = async (e) => {
     const data = getFormData(e.currentTarget);
@@ -24,9 +22,7 @@ const LoginPage = () => {
     const { success, message } = await res.json();
     if (success) {
       setError('');
-      // We need this to trigger GET after redirect
-      startTransition(() => router.push('/'));
-      startTransition(() => router.refresh());
+      redirect('/');
     } else {
       setError(message);
     }
