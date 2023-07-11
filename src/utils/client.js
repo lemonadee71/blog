@@ -3,8 +3,14 @@ import { useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 
 export const getFormData = (form) => {
+  const data = new FormData(form);
   const o = {};
-  for (const [key, value] of new FormData(form)) o[key] = value;
+
+  for (const key of data.keys()) {
+    const value = data.getAll(key);
+    o[key] = value.length > 1 ? value : value[0];
+  }
+
   return o;
 };
 
