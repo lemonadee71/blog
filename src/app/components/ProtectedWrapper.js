@@ -1,5 +1,5 @@
 import React from 'react';
-import { fetchFromAPIWithCookie } from '../utils/server';
+import { fetchFromAPIWithCookie } from '@/utils/server';
 
 async function hasAuthenticatedUser() {
   const res = await fetchFromAPIWithCookie('/user', {

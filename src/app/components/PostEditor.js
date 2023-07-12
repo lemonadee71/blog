@@ -1,3 +1,4 @@
+'use client';
 import { Editor as TinyEditor } from '@tinymce/tinymce-react';
 
 // TinyMCE so the global var exists
@@ -51,7 +52,7 @@ import 'tinymce/plugins/wordcount';
 /* eslint import/no-webpack-loader-syntax: off */
 import contentCss from '!!raw-loader!tinymce/skins/content/default/content.min.css';
 import contentUiCss from '!!raw-loader!tinymce/skins/ui/oxide/content.min.css';
-import flowbiteTypographyStyles from '!!raw-loader!../../public/flowbite-typography.css';
+import flowbiteTypographyStyles from '!!raw-loader!../../../public/flowbite-typography.css';
 
 export default function PostEditor(props) {
   const { init, ...rest } = props;

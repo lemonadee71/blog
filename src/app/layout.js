@@ -1,7 +1,7 @@
 import './globals.css';
 import Link from 'next/link';
-import ProtectedWrapper from '@/components/ProtectedWrapper';
-import LogoutButton from '@/components/LogoutButton';
+import ProtectedWrapper from './components/ProtectedWrapper';
+import LogoutButton from './components/LogoutButton';
 
 export const metadata = {
   title: 'Create Next App',
