@@ -1,23 +1,18 @@
 'use client';
 import React, { useRef, useState } from 'react';
-import { getFormData, useRedirect } from '@/utils/client';
 import PostEditor from '@/app/components/PostEditor';
+import { getFormData, useRedirect } from '@/utils/client';
+import { fetchFromAPI } from '@/utils';
 
 // TODO: Add keyboard shortcut for preview
-// Behavior:
-// If body is saved with content, we will save a draft
-// basically creating a post so any subsequent actions
-// will count as edit so method should be 'PUT'
-// Extra:
-// If no other fields are filled and body went from with content to none
-// it should delete the draft that we made
-// so new content saved will make a new post entry
-const CreatePost = ({ initContent }) => {
-  const [content, setContent] = useState(initContent);
+const CreatePost = ({ init }) => {
+  const [content, setContent] = useState(init?.content);
   const [tags, setTags] = useState([]);
-  const redirect = useRedirect();
+  const [error, setError] = useState();
   const editorRef = useRef(null);
   const formRef = useRef(null);
+  const postId = useRef(null);
+  const redirect = useRedirect();
 
   // TODO: Consider limiting input to alphanumeric
   const addTag = (e) => {
@@ -38,11 +33,19 @@ const CreatePost = ({ initContent }) => {
     setTags((prev) => prev.filter((tag) => tag !== value));
   };
 
-  const createPost = async (e) => {
-    const data = getFormData(e.currentTarget);
+  const createPost = async (isDraft) => {
+    const data = getFormData(formRef.current);
+    data.published = !isDraft;
 
-    const res = await fetchFromAPI('/posts', {
-      method: 'POST',
+    if (isDraft && !data.title) {
+      data.title = `Draft ${new Date().toISOString()}`;
+    }
+
+    const path = postId.current ? `/posts/${postId.current}` : '/posts';
+    const method = postId.current ? 'PUT' : 'POST';
+
+    const res = await fetchFromAPI(path, {
+      method,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -50,14 +53,21 @@ const CreatePost = ({ initContent }) => {
     });
 
     const result = await res.json();
+    if (result.post) {
+      postId.current = result.post.shortid;
+      setError(null);
+
+      if (!isDraft) redirect('/');
+    } else {
+      setError(result.errors);
+    }
   };
 
-  // TODO: Make this save a draft
   const save = () => {
     if (editorRef.current) {
       editorRef.current.uploadImages().then(() => {
         setContent(editorRef.current.getContent());
-        console.log('Images uploaded');
+        createPost(true);
       });
     }
   };
@@ -70,7 +80,7 @@ const CreatePost = ({ initContent }) => {
         id="post"
         onSubmit={(e) => {
           e.preventDefault();
-          createPost(e);
+          createPost(false);
         }}
       >
         <div>

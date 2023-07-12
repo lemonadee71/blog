@@ -4,7 +4,7 @@ const CreatePostPage = () => {
   return (
     <main className="container max-w-4xl mx-auto my-8 py-2 px-6">
       <h1 className="text-3xl text-gray-900 font-bold mb-5">Create post</h1>
-      <CreatePost initContent={initContent} />
+      <CreatePost init={{ content: initContent }} />
     </main>
   );
 };
