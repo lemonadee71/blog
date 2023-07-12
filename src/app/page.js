@@ -2,7 +2,7 @@ import React from 'react';
 import { fetchFromAPI } from '../utils';
 
 async function fetchPosts() {
-  const res = await fetchFromAPI('/posts');
+  const res = await fetchFromAPI('/posts', { cache: process.env.CACHE_MODE });
   const { posts } = await res.json();
 
   return posts;
