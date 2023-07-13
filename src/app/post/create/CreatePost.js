@@ -1,5 +1,6 @@
 'use client';
 import React, { useRef, useState } from 'react';
+import Alert from '@/app/components/Alert';
 import PostEditor from '@/app/components/PostEditor';
 import { getFormData, useRedirect } from '@/utils/client';
 import { fetchFromAPI } from '@/utils';
@@ -60,7 +61,15 @@ const CreatePost = ({ init }) => {
 
       if (!isDraft) redirect('/');
     } else {
-      setError(result.errors);
+      if (Array.isArray(result.errors)) {
+        setError(result.errors);
+      } else {
+        setError(
+          Object.entries(result.errors).reduce((arr, curr) => {
+            return [...arr, `${curr[0]}: ${curr[1]}`];
+          }, [])
+        );
+      }
     }
   };
 
@@ -75,6 +84,10 @@ const CreatePost = ({ init }) => {
 
   return (
     <>
+      {error && <Alert type="danger" message={error} />}
+
+      <h1 className="text-3xl text-gray-900 font-bold mb-5">Create post</h1>
+
       <form
         ref={formRef}
         className="space-y-3 mb-3"
