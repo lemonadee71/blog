@@ -35,6 +35,7 @@ const CreatePost = ({ init }) => {
 
   const createPost = async (isDraft) => {
     const data = getFormData(formRef.current);
+    data.body = editorRef.current.getContent();
     data.published = !isDraft;
 
     if (isDraft && !data.title) {
@@ -63,11 +64,11 @@ const CreatePost = ({ init }) => {
     }
   };
 
-  const save = () => {
+  const save = (isDraft = true) => {
     if (editorRef.current) {
       editorRef.current.uploadImages().then(() => {
         setContent(editorRef.current.getContent());
-        createPost(true);
+        createPost(isDraft);
       });
     }
   };
@@ -80,7 +81,7 @@ const CreatePost = ({ init }) => {
         id="post"
         onSubmit={(e) => {
           e.preventDefault();
-          createPost(false);
+          save(false);
         }}
       >
         <div>
@@ -146,7 +147,7 @@ const CreatePost = ({ init }) => {
         <PostEditor
           onInit={(_, e) => (editorRef.current = e)}
           initialValue={content}
-          init={{ save_onsavecallback: save }}
+          init={{ save_onsavecallback: () => save(true) }}
         />
       </div>
 
