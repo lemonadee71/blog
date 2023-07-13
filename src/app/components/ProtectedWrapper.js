@@ -8,10 +8,10 @@ async function hasAuthenticatedUser() {
   return res.json();
 }
 
-const ProtectedWrapper = async ({ ifHasUser, ifNoUser }) => {
+const ProtectedWrapper = async ({ ifHasUser, ifNoUser, ...props }) => {
   const { user } = await hasAuthenticatedUser();
 
-  return <div>{user ? ifHasUser : ifNoUser}</div>;
+  return <div {...props}>{user ? ifHasUser : ifNoUser}</div>;
 };
 
 export default ProtectedWrapper;
